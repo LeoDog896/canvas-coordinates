@@ -10,6 +10,11 @@ const context = canvas.getContext('2d') ?? error('No context found');
 let mouse = { x: 0, y: 0 };
 let redraw = false;
 
+const color = (alpha: number) => {
+  const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  return isDarkMode ? `rgba(255, 255, 255, ${alpha})` : `rgba(0, 0, 0, ${alpha})`;
+}
+
 function draw() {
   if (!redraw) {
     requestAnimationFrame(draw);
@@ -19,7 +24,7 @@ function draw() {
   context.clearRect(0, 0, canvas.width, canvas.height);
 
   // grid
-  context.strokeStyle = 'rgba(0, 0, 0, 0.1)';
+  context.strokeStyle = color(0.1);
   context.lineWidth = 1;
 
   const gridSize = 50;
@@ -39,14 +44,14 @@ function draw() {
   }
 
   // mouse circle
-  context.strokeStyle = 'rgba(0, 0, 0, 0.5)';
+  context.strokeStyle = color(0.5);
   context.lineWidth = 2;
   context.beginPath();
   context.arc(mouse.x, mouse.y, 20, 0, Math.PI * 2);
   context.stroke();
 
   // coordinate text
-  context.fillStyle = 'rgba(0, 0, 0, 0.5)';
+  context.fillStyle = color(0.5);
   context.font = '12px monospace';
   context.textAlign = 'center';
   context.textBaseline = 'middle';

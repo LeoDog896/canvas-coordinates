@@ -5,6 +5,13 @@ body, html {
   width: 100%;
 }
 
+/* dark mode */
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #1e1e1e;
+  }
+}
+
 div#app {
   height: 100%;
   width: 100%;
