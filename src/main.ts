@@ -7,9 +7,15 @@ const error = (message: string) => {
 const canvas = document.querySelector('canvas') ?? error('No canvas found');
 const context = canvas.getContext('2d') ?? error('No context found');
 
-let mousePosition = { x: 0, y: 0 };
+let mouse = { x: 0, y: 0 };
+let redraw = false;
 
 function draw() {
+  if (!redraw) {
+    requestAnimationFrame(draw);
+    return;
+  }
+
   context.clearRect(0, 0, canvas.width, canvas.height);
 
   // grid
@@ -36,7 +42,7 @@ function draw() {
   context.strokeStyle = 'rgba(0, 0, 0, 0.5)';
   context.lineWidth = 2;
   context.beginPath();
-  context.arc(mousePosition.x, mousePosition.y, 20, 0, Math.PI * 2);
+  context.arc(mouse.x, mouse.y, 20, 0, Math.PI * 2);
   context.stroke();
 
   // coordinate text
@@ -45,14 +51,14 @@ function draw() {
   context.textAlign = 'center';
   context.textBaseline = 'middle';
   
-  const text = `${mousePosition.x}, ${mousePosition.y}`;
+  const text = `${mouse.x}, ${mouse.y}`;
 
   const width = context.measureText(text).width;
   const height = 12;
 
   // move the text down if it's close to the top
-  const textX = Math.min(Math.max(mousePosition.x, width), canvas.width - width);
-  const textY = mousePosition.y < height * 4 ? mousePosition.y + 30 : mousePosition.y - 30;
+  const textX = Math.min(Math.max(mouse.x, width), canvas.width - width);
+  const textY = mouse.y < height * 4 ? mouse.y + 30 : mouse.y - 30;
 
   context.fillText(text, textX, textY);
   
@@ -70,5 +76,6 @@ window.addEventListener('resize', () => {
 });
 
 window.addEventListener('mousemove', (event) => {
-  mousePosition = { x: event.clientX, y: event.clientY };
+  mouse = { x: event.clientX, y: event.clientY };
+  redraw = true;
 });
