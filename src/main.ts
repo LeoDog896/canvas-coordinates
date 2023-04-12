@@ -11,7 +11,8 @@ let mousePosition = { x: 0, y: 0 };
 
 function draw() {
   context.clearRect(0, 0, canvas.width, canvas.height);
-  
+
+  // grid
   context.strokeStyle = 'rgba(0, 0, 0, 0.1)';
   context.lineWidth = 1;
 
@@ -31,11 +32,20 @@ function draw() {
     context.stroke();
   }
 
+  // mouse circle
   context.strokeStyle = 'rgba(0, 0, 0, 0.5)';
   context.lineWidth = 2;
   context.beginPath();
   context.arc(mousePosition.x, mousePosition.y, 20, 0, Math.PI * 2);
   context.stroke();
+
+  // coordinate text
+  context.fillStyle = 'rgba(0, 0, 0, 0.5)';
+  context.font = '12px monospace';
+  context.textAlign = 'center';
+  context.textBaseline = 'middle';
+  context.fillText(`${mousePosition.x}, ${mousePosition.y}`, mousePosition.x, mousePosition.y - 30);
+  
 
   requestAnimationFrame(draw);
 }
