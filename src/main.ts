@@ -9,8 +9,6 @@ const context = canvas.getContext('2d') ?? error('No context found');
 
 let mousePosition = { x: 0, y: 0 };
 
-const isCloseTo = (value: number, target: number, threshold: number) => Math.abs(value - target) < threshold;
-
 function draw() {
   context.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -53,20 +51,11 @@ function draw() {
   const height = 12;
 
   // move the text down if it's close to the top
-  const textY = isCloseTo(mousePosition.y, 0, (height * 4)) ? mousePosition.y + 30 : mousePosition.y - 30;
-
-  const textX = 
-    isCloseTo(mousePosition.x, 0, width) 
-      ? mousePosition.x + (width / 2)
-      : (
-        isCloseTo(mousePosition.x, canvas.width, width) 
-        ? mousePosition.x - (width / 2)
-        : mousePosition.x
-      );
+  const textX = Math.min(Math.max(mousePosition.x, width), canvas.width - width);
+  const textY = mousePosition.y < height * 4 ? mousePosition.y + 30 : mousePosition.y - 30;
 
   context.fillText(text, textX, textY);
   
-
   requestAnimationFrame(draw);
 }
 
